@@ -2,7 +2,7 @@ const fs = require("fs");
 
 var _configValues = {};
 
-var _ConfigLoaderPipeline = new Array();
+var _configLoaderPipeline = new Array();
 
 
 function getValue(key)
@@ -10,7 +10,7 @@ function getValue(key)
 		return _configValues[key];
 }
 
-function LoadEnv(configuration)
+function loadEnv(configuration)
 {
 	Object.keys(process.env).forEach(function(key) {
 		
@@ -20,28 +20,28 @@ function LoadEnv(configuration)
 });
 }
 
-function LoadConfiguration()
+function loadConfiguration()
 {
-	for(var i=0;i<_ConfigLoaderPipeline.length;i++)
+	for(var i=0;i<_configLoaderPipeline.length;i++)
 	{
-		LoadEnvironment(_ConfigLoaderPipeline[i]);
+		loadEnvironment(_configLoaderPipeline[i]);
 	}
 	
 }
 
-function LoadEnvironment(environmentConfiguration)
+function loadEnvironment(environmentConfiguration)
 {
 	if(environmentConfiguration.Type == "EnvVariable")
 	{
-		LoadEnv(_configValues);
+		loadEnv(_configValues);
 	}
 	else if(environmentConfiguration.Type == "JsonFile")
 	{
-		LoadJsonConfig(environmentConfiguration, _configValues);
+		loadJsonConfig(environmentConfiguration, _configValues);
 	}
 }
 
-function LoadJsonConfig(environmentConfiguration, configuration)
+function loadJsonConfig(environmentConfiguration, configuration)
 {
 	let rawData = null;
 	try
@@ -79,19 +79,19 @@ function LoadJsonConfig(environmentConfiguration, configuration)
   {
    var config = JSON.parse(rawData);
 
-  LoadJsonRecursive(config, configuration, "");
+  loadJsonRecursive(config, configuration, "");
   }
 	
 }
 
-function LoadJsonRecursive(jsonObject, configuration, prefix)
+function loadJsonRecursive(jsonObject, configuration, prefix)
 {
 	Object.keys(jsonObject).forEach(function(key) {
 		
 		var val = jsonObject[key];
 		if(typeof(val)=="object")
 		{
-			LoadJsonRecursive(val, configuration, prefix+key+":");
+			loadJsonRecursive(val, configuration, prefix+key+":");
 		}
 		else{
 		configuration[prefix+key] = val;
@@ -112,26 +112,26 @@ function printConfig()
 	
 }
 
-function AddJsonFile(fileName, optional)
+function addJsonFile(fileName, optional)
 {
 	var JsonFileConfig = {Type:'JsonFile', FileName:fileName, Optional:optional};
 	
-	_ConfigLoaderPipeline.push(JsonFileConfig);
+	_configLoaderPipeline.push(JsonFileConfig);
 	
 }
 
-function AddEnvironmentVariables()
+function addEnvironmentVariables()
 {
 	var envConfig = {Type:'EnvVariable'};
 	
-	_ConfigLoaderPipeline.push(envConfig);
+	_configLoaderPipeline.push(envConfig);
 	
 }
 
 exports.getValue = getValue;
-exports.addJsonFile = AddJsonFile;
-exports.addEnvironmentVariables = AddEnvironmentVariables;
-exports.loadConfiguration = LoadConfiguration;
+exports.addJsonFile = addJsonFile;
+exports.addEnvironmentVariables = addEnvironmentVariables;
+exports.loadConfiguration = loadConfiguration;
 exports.printConfig = printConfig;
 
 
