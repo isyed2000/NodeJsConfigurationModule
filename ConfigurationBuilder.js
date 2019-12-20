@@ -51,13 +51,27 @@ function LoadJsonConfig(environmentConfiguration, configuration)
 	}
 	catch(err)
 	{
+		
+	
 		if (err.code === 'ENOENT') {
-  console.log('File not found!');
+			{
+				console.log(environmentConfiguration.FileName + ' : File not found!');
+				if(environmentConfiguration.Optional)
+				{
+					console.log("Ignoring File not found error as configuration file is marked as optional.");
+				}
+				else{
+					console.log(err);
+					console.log("Error occurred");
+					throw err;
+				}
+			}
 } else {
+	
+	console.log(err);
+		console.log("Error occurred");
   throw err;
 }
-		console.log(err);
-		console.log("Error occurred");
 		
 	}
   
@@ -77,13 +91,11 @@ function LoadJsonRecursive(jsonObject, configuration, prefix)
 		var val = jsonObject[key];
 		if(typeof(val)=="object")
 		{
-			LoadJsonRecursive(val, configuration, key+":");
+			LoadJsonRecursive(val, configuration, prefix+key+":");
 		}
 		else{
 		configuration[prefix+key] = val;
 		}
-		
-		
 		
 });
 	
@@ -105,7 +117,7 @@ function AddJsonFile(fileName, optional)
 	var JsonFileConfig = {Type:'JsonFile', FileName:fileName, Optional:optional};
 	
 	_ConfigLoaderPipeline.push(JsonFileConfig);
-	console.log(_ConfigLoaderPipeline.length);
+	
 }
 
 function AddEnvironmentVariables()
@@ -113,13 +125,13 @@ function AddEnvironmentVariables()
 	var envConfig = {Type:'EnvVariable'};
 	
 	_ConfigLoaderPipeline.push(envConfig);
-	console.log(_ConfigLoaderPipeline.length);
+	
 }
 
-exports.GetValue = getValue;
-exports.AddJsonFile = AddJsonFile;
-exports.AddEnvironmentVariables = AddEnvironmentVariables;
-exports.LoadConfiguration = LoadConfiguration;
-exports.PrintConfig = printConfig;
+exports.getValue = getValue;
+exports.addJsonFile = AddJsonFile;
+exports.addEnvironmentVariables = AddEnvironmentVariables;
+exports.loadConfiguration = LoadConfiguration;
+exports.printConfig = printConfig;
 
 
