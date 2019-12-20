@@ -10,4 +10,4 @@ configuration.loadConfiguration();
 
 console.log("First Name " + configuration.getValue("FirstName"));
 console.log("Municipality code " + configuration.getValue("Address:TownshipDetails:MunicipilatyCode"));
-console.log("Demo End");
+console.log("Demo End.");
