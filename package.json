@@ -1,0 +1,22 @@
+{
+  "name": "@i_syed2000/nodejsconfigurationmodule",
+  "version": "1.0.0",
+  "description": ".NET Core style Configuration loader",
+  "main": "ConfigurationBuilder.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isyed2000/NodeJsConfigurationModule.git"
+  },
+  "keywords": [
+    "configuration"
+  ],
+  "author": "Iftikhar Ali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isyed2000/NodeJsConfigurationModule/issues"
+  },
+  "homepage": "https://github.com/isyed2000/NodeJsConfigurationModule#readme"
+}
